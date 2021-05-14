@@ -1,0 +1,26 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: linkerd
+  namespace: infrastructure
+spec:
+  releaseName: linkerd2
+  chart:
+    repository: https://helm.linkerd.io/edge
+    name: linkerd2
+    version: 20.10.3
+  valuesFrom:
+    - secretKeyRef:
+        name: linkerd-certs
+        optional: false
+  values:
+    prometheus:
+      enabled: false
+    grafana:
+      enabled: false
+    identity:
+      issuer:
+        crtExpiry: 2031-03-23T02:23:05Z
+    global:
+      prometheusUrl: http://prometheus-server.infrastructure.svc.cluster.local
+      grafanaURL: https://grafana.Local
